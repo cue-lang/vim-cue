@@ -1,91 +1,61 @@
-*vim-cue.txt* Cue development plugin
+*vim-cue.txt* CUE filetype plugin for Vim
 *vim-cue*
 
-CONTENTS                                                             *cue-contents*
+CONTENTS                                                            *cue-contents*
 
   1. Intro........................................|cue-intro|
   2. Install......................................|cue-install|
-  3. Commands.....................................|cue-commands|
-  4. Mappings.....................................|cue-mappings|
-  6. Functions....................................|cue-functions|
-  7. Settings.....................................|cue-settings|
-  8. Troubleshooting..............................|cue-troubleshooting|
-  9. Credits......................................|cue-credits|
+  3. Language server..............................|cue-lsp|
+  4. Folding......................................|cue-folding|
+  5. Credits......................................|cue-credits|
 
 ==============================================================================
-INTRO                                                                   *cue-intro*
+INTRO                                                                  *cue-intro*
+
+vim-cue is a filetype plugin for the CUE language (https://cuelang.org). It
+provides filetype detection for *.cue files, syntax highlighting, indentation,
+and syntax-based folding.
+
+Features that require understanding CUE semantics -- formatting, diagnostics,
+completion, and navigation -- are not implemented by this plugin. They are
+provided by the CUE language server; see |cue-lsp|.
 
 ==============================================================================
-INSTALL                                                               *cue-install*
+INSTALL                                                              *cue-install*
+
+See the README for installation instructions covering the common Vim plugin
+managers.
 
 ==============================================================================
-COMMANDS                                                             *cue-commands*
+LANGUAGE SERVER                                                          *cue-lsp*
 
-                                                                          *:CueFmt*
-:CueFmt
+Formatting and diagnostics are provided by the CUE language server, which is
+built into the `cue` command and started with: >
 
-Filter the current Cue buffer through `cue fmt`.  It tries to
-preserve cursor position and avoids replacing the buffer with stderr
-output.
-
-==============================================================================
-MAPPINGS                                                            *cue-mappings*
-
-==============================================================================
-FUNCTIONS                                                           *cue-functions*
-
-                                                                     *cue#Format()*
-
-Filter the current Cue buffer through `cue fmt`.  It tries to
-preserve cursor position and avoids replacing the buffer with stderr
-output.
-
-==============================================================================
-SETTINGS                                                            *cue-settings*
-
-                                                             *'g:cue_fmt_on_save'*
-
-Use this option to auto |:CueFmt| on save. By default it's enabled >
-
-  let g:cue_fmt_on_save = 1
+  cue lsp
 <
-                                                                 *'g:cue_command'*
+Configure your LSP client to launch `cue lsp` for the `cue` filetype, with the
+project root resolved to the directory containing the enclosing `cue.mod`. Any
+LSP client works -- for example Neovim's built-in LSP, vim-lsp, or coc.nvim;
+register a server whose command is `cue lsp`. Formatting on save is then
+configured through that client rather than by this plugin.
 
-Use this option to define which tool is used to fotmat. By default `cue` is
-used >
-
-  let g:cue_command = "cue"
-<
-                                                             *'g:cue_fmt_command'*
-
-Use this option to define which <cmd> parameter is used with *g:cue_command* tool.
-By default `fmt` is used >
-
-  let g:cue_fmt_command = "fmt"
-<
-                                                             *'g:cue_fmt_options'*
-
-Use this option to add additional options to the
-|'g:cue_command'| + |'g:cue_fmt_command'|. Default is empty. >
-
-  let g:cue_fmt_options = ''
-<
-                                                       *'g:cue_fmt_fail_silently'*
-
-Use this option to enable processing of
-|'g:cue_command'| + |'g:cue_fmt_command'| command if it fails. By default
-it is turned off. By default the error output from the
-|'g:cue_command'| + |'g:cue_fmt_command'| command is ignored.
-FixMe: The processing of the |'g:cue_command'| + |'g:cue_fmt_command'|
-is not implemented yet. So clearing this option would not do anything at this time. >
-
-  let g:cue_fmt_fail_silently = 1
-<
+Earlier versions of this plugin shelled out to `cue fmt` on save via a
+`:CueFmt` command and a `g:cue_fmt_on_save` option, and shipped a Syntastic
+checker for diagnostics. These have been removed: both formatting and
+diagnostics are now the language server's responsibility.
 
 ==============================================================================
-TROUBLESHOOTING                                              *cue-troubleshooting*
+FOLDING                                                              *cue-folding*
+
+The plugin enables syntax-based folding for *.cue files, setting 'foldmethod'
+to "syntax" and 'foldlevel' to 100 when a CUE file is opened.
 
 ==============================================================================
-CREDITS                                                             *cue-credits*
+CREDITS                                                              *cue-credits*
 
+vim-cue is derived from vim-jsonnet (https://github.com/google/vim-jsonnet).
+The indent script is adapted from Vim's distributed JSON indent file; see
+indent/VIM_LICENSE.
 
+vim:tw=78:ts=8:ft=help:norl:

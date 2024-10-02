@@ -31,6 +31,14 @@ Plug 'jjo/vim-cue'
 git clone https://github.com/jjo/vim-cue ~/.vim/bundle/vim-cue
 ```
 
+## Language server
+
+This plugin provides syntax highlighting, indentation, and folding.
+Formatting, diagnostics, completion, and navigation come from the CUE
+language server (`cue lsp`), configured through your editor's LSP client.
+For tips on getting started, see
+https://github.com/cue-lang/cue/wiki/LSP:-Getting-started
+
 ## More Info
 
 For more info on Cue:
